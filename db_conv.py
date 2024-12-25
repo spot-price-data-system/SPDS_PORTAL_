@@ -23,7 +23,7 @@ collumnfactors = [
     scale_factor,#hydraulic pressure
     scale_factor,#spot price cycle time
     scale_factor,#opcua cycle time
-    1#tailgate sensor
+    1,#tailgate sensor
     scale_factor,#tailwater level
     scale_factor,#flowmeter flow
     scale_factor#water count total
