@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>SPDS Portal - Home</title>
+  </head>
+  <body style="font-family:sans-serif">
+    <h1>SPDS Portal</h1>
+    <h3>Home</h3>
+
+    <p>Download database</p>
+    <form action="{{url_for('download')}}" method="post">
+      <label for="rows">Rows: <i>(leave as 0 for all rows)</i></label><br>
+      <input type="number" name="rows" id="rows" value="0"><br><br>
+      <input type="submit" value="download">
+      <p>Common periods:</p>
+      <p>1 hour: 30</p>
+      <p>1 day: 720</p>
+      <p>1 week: 5040</p>
+      <p>5 weeks: 25200</p>
+    </form>
+
+    <p>
+      Water level: {{water_level}}mm<br>
+      Spot price: ${{spot_price}}/MWh<br>
+      Signal: {{signal}}<br>
+      Life bit: {{life_bit}}
+    </p>
+
+    <form action="{{url_for('params_change')}}" method="post">
+      <!--alarm email parameters-->
+      <label for="emails">Alarm emails:</label><br>
+      <textarea id="emails" name="emails" rows="5" cols="50">{{emails}}</textarea><br><br>
+
+      <!--Setpoint parameters explanation-->
+      <p>
+        Algorithm:<br>
+        for ${{setpointA}}<sup>(A)</sup> &lt price:<br>
+        <ul>
+          <li>{{setpointA1}}<sup>(A.1)</sup>mm &lt LL &#8594 1</li>
+          <li>{{setpointA2}}<sup>(A.2)</sup>mm &lt LL &lt {{setpointA1}}<sup>(A.1)</sup>mm &#8594 2</li>
+          <li>{{setpointA3}}<sup>(A.3)</sup>mm &lt LL &lt {{setpointA2}}<sup>(A.2)</sup>mm &#8594 3</li>
+          <li>LL &lt {{setpointA3}}<sup>(A.3)</sup>mm &#8594 4</li>
+        </ul>
+
+        for ${{setpointB}}<sup>(B)</sup> &lt price &lt ${{setpointA}}<sup>(A)</sup>:<br>
+        <ul>
+          <li>{{setpointB1}}<sup>(B.1)</sup>mm &lt LL &#8594 1</li>
+          <li>{{setpointB2}}<sup>(B.2)</sup>mm &lt LL &lt {{setpointB1}}<sup>(B.1)</sup>mm &#8594 2</li>
+          <li>{{setpointB3}}<sup>(B.3)</sup>mm &lt LL &lt {{setpointB2}}<sup>(B.2)</sup>mm &#8594 3</li>
+          <li>LL &lt {{setpointB3}}<sup>(B.3)</sup>mm &#8594 4</li>
+        </ul>
+
+        for ${{setpointC}}<sup>(C)</sup> &lt price &lt ${{setpointB}}<sup>(B)</sup>:<br>
+        <ul>
+          <li>{{setpointC1}}<sup>(C.1)</sup>mm &lt LL &#8594 1</li>
+          <li>{{setpointC2}}<sup>(C.2)</sup>mm &lt LL &lt {{setpointC1}}<sup>(C.1)</sup>mm &#8594 2</li>
+          <li>{{setpointC3}}<sup>(C.3)</sup>mm &lt LL &lt {{setpointC2}}<sup>(C.2)</sup>mm &#8594 3</li>
+          <li>LL &lt {{setpointC3}}<sup>(C.3)</sup>mm &#8594 4</li>
+        </ul>
+
+        price &lt ${{setpointC}}<sup>(C)</sup> &#8594 4<br><br>
+      </p>
+
+      <!--Setpoint parameters-->
+      <label for="SetpointA">Setpoint A:</label><br>
+      <input type="number" name="SetpointA" id="SetpointA" value="{{setpointA}}"><br><br>
+      <label for="SetpointA1">Setpoint A.1:</label><br>
+      <input type="number" name="SetpointA1" id="SetpointA1" value="{{setpointA1}}"><br><br>
+      <label for="SetpointA2">Setpoint A.2:</label><br>
+      <input type="number" name="SetpointA2" id="SetpointA2" value="{{setpointA2}}"><br><br>
+      <label for="SetpointA3">Setpoint A.3:</label><br>
+      <input type="number" name="SetpointA3" id="SetpointA3" value="{{setpointA3}}"><br><br>
+      <label for="SetpointB">Setpoint B:</label><br>
+      <input type="number" name="SetpointB" id="SetpointB" value="{{setpointB}}"><br><br>
+      <label for="SetpointB1">Setpoint B.1:</label><br>
+      <input type="number" name="SetpointB1" id="SetpointB1" value="{{setpointB1}}"><br><br>
+      <label for="SetpointB2">Setpoint B.2:</label><br>
+      <input type="number" name="SetpointB2" id="SetpointB2" value="{{setpointB2}}"><br><br>
+      <label for="SetpointB3">Setpoint B.3:</label><br>
+      <input type="number" name="SetpointB3" id="SetpointB3" value="{{setpointB3}}"><br><br>
+      <label for="SetpointC">Setpoint C:</label><br>
+      <input type="number" name="SetpointC" id="SetpointC" value="{{setpointC}}"><br><br>
+      <label for="SetpointC1">Setpoint C.1:</label><br>
+      <input type="number" name="SetpointC1" id="SetpointC1" value="{{setpointC1}}"><br><br>
+      <label for="SetpointC2">Setpoint C.2:</label><br>
+      <input type="number" name="SetpointC2" id="SetpointC2" value="{{setpointC2}}"><br><br>
+      <label for="SetpointC3">Setpoint C.3:</label><br>
+      <input type="number" name="SetpointC3" id="SetpointC3" value="{{setpointC3}}"><br><br>
+
+      <input type="submit" value="submit changes">
+    </form>
+  </body>
+</html>
