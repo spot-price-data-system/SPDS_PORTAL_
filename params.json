@@ -1,0 +1,21 @@
+{
+    "XPATHS": {
+        "AEMO": {
+            "path": "//*[@class='region-price-value']",
+            "index": -1
+        },
+        "DiamondGem": {
+            "path": "//*[@class='price-info']",
+            "index": -4
+        }
+    },
+    "emails": [
+        "lukecampbell5853@gmail.com"
+    ],
+    "setpoints": {
+        "1": 1,
+        "2": 2,
+        "3": 3,
+        "4": 4
+    }
+}
