@@ -42,10 +42,10 @@ def excel(filepath,root):
     spreadsheet = openpyxl.Workbook()#create new workbook
     
     for table in tables:
-        headers_query = "PRAGMA table_info("+table+");"#make query to fetch column headers
-        headers = cursor.execute(headers_query).fetchall()#fetch header data
-        headers = [header[1] for header in headers]#extract header names from all header data
-        
+        with open("headings.txt","r") as file:
+            headers = file.readline().strip().split(",")
+        maxdata = len(headers)
+
         rows_query = "SELECT * FROM " + table#make query to fetch rows
         rows = cursor.execute(rows_query).fetchall()#fetch row data
 
@@ -65,6 +65,8 @@ def excel(filepath,root):
             y+=1
             x=1
             for data in row:
+                if x > maxdata:
+                    break
                 if data and type(data)!=str:
                     data = data / collumnfactors[x-1]
                 sheet.cell(row=y,column=x,value=data)
