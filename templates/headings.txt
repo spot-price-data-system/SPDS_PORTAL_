@@ -1,0 +1,1 @@
+timestamp,spot_price,signal,connected,kw_out,penstock_pressure,flow,water_level,temp_bearing_ds,temp_bearing_nds,temp_bearing_ax,temp_winding_u,temp_winding_v,temp_winding_w,vibrations_ds,vibrations_nds,vibrations_ax,hydraulic_pressure,spot_price_cycle,opcua_cycle,tailgate_sensor,tailwater_level,flowmeter_flow,water_count_total
