@@ -26,7 +26,9 @@ collumnfactors = [
     1,#tailgate sensor
     scale_factor,#tailwater level
     scale_factor,#flowmeter flow
-    scale_factor#water count total
+    scale_factor,#water count total
+    scale_factor,#avg_battery_current
+    scale_factor#max_battery_current
 ]
 
 def excel(filepath,root):
