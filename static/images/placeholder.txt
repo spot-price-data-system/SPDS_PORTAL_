@@ -1,1 +1,1 @@
-Plots go here
+Graphs go here
