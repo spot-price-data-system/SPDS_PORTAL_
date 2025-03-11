@@ -2,15 +2,83 @@
 <html>
   <head>
     <title>SPDS Portal - Home</title>
+
+    <style>
+      .plot{
+        width:200px;
+      }
+      .plot>img{
+        width:200px;
+      }
+      .plot>p{
+        text-align: center;
+      }
+    </style>
   </head>
   <body style="font-family:sans-serif">
     <h1>SPDS Portal</h1>
     <h3>Home</h3>
+    
+    <hr>
+    <!--STANDARD PLOTS-->
+
+    <table>
+      <tr>
+        <td>
+          <div class="plot">
+            <img src="{{url_for('static', filename='images/spot_price.jpg')}}"/>
+            <p>spot price</p>
+          </div>
+        </td>
+        <td>
+          <div class="plot">
+            <img src="{{url_for('static', filename='images/signals.jpg')}}"/>
+            <p>signal</p>
+          </div>
+        </td>
+        <td>
+          <div class="plot">
+            <img src="{{url_for('static', filename='images/connected.jpg')}}"/>
+            <p>connected</p>
+          </div>
+        </td>
+        <td>
+          <div class="plot">
+            <img src="{{url_for('static', filename='images/water_levels.jpg')}}"/>
+            <p>water level</p>
+          </div>
+        </td>
+      </tr>
+    </table>
+
+    <hr>
+    <!--CUSTOM PLOT FORM-->
+
+    <p>Download custom graph: [hold 'ctrl' to select multiple]</p>
+    <form action="{{url_for('custom_graph')}}" method = "post">
+      <label for="headers">Parameters:</label><br>
+      <select name="headers" method="GET" action="/">
+        {% for header in headers[1:] %}
+            <option value="{{header}}">{{ header }}</option>
+        {% endfor %}
+      </select><br><br>
+      <label for="rows">Rows:</label><br>
+      <input type="number" name="rows" id="rows" value="5040"><br><br>
+      <input type="submit" value="create"/>
+    </form>
+
+    <hr>
+    <!--DOWNLOAD DATABASE-->
 
     <p>Download database</p>
     <form action="{{url_for('download')}}" method="post">
       <label for="rows">Rows: <i>(leave as 0 for all rows)</i></label><br>
       <input type="number" name="rows" id="rows" value="0"><br><br>
+      <label for="type">Type:</label><br>
+      <select name="type">
+        <option value="xlsx" selected>.xlsx (excel)</option>
+        <option value="db">.db</option>
+      </select><br><br>
       <input type="submit" value="download">
       <p>Common periods:</p>
       <p>1 hour: 30</p>
@@ -19,6 +87,9 @@
       <p>5 weeks: 25200</p>
     </form>
 
+    <hr>
+    <!--CURRENT INFO-->
+
     <p>
       Water level: {{water_level}}mm<br>
       Spot price: ${{spot_price}}/MWh<br>
@@ -26,42 +97,46 @@
       Life bit: {{life_bit}}
     </p>
 
+    <hr>
+    <!--ALGORITHM-->
+
+    <p>
+      Algorithm:<br>
+      for ${{setpointA}}<sup>(A)</sup> &lt price:<br>
+      <ul>
+        <li>{{setpointA1}}<sup>(A.1)</sup>mm &lt LL &#8594 1</li>
+        <li>{{setpointA2}}<sup>(A.2)</sup>mm &lt LL &lt {{setpointA1}}<sup>(A.1)</sup>mm &#8594 2</li>
+        <li>{{setpointA3}}<sup>(A.3)</sup>mm &lt LL &lt {{setpointA2}}<sup>(A.2)</sup>mm &#8594 3</li>
+        <li>LL &lt {{setpointA3}}<sup>(A.3)</sup>mm &#8594 4</li>
+      </ul>
+
+      for ${{setpointB}}<sup>(B)</sup> &lt price &lt ${{setpointA}}<sup>(A)</sup>:<br>
+      <ul>
+        <li>{{setpointB1}}<sup>(B.1)</sup>mm &lt LL &#8594 1</li>
+        <li>{{setpointB2}}<sup>(B.2)</sup>mm &lt LL &lt {{setpointB1}}<sup>(B.1)</sup>mm &#8594 2</li>
+        <li>{{setpointB3}}<sup>(B.3)</sup>mm &lt LL &lt {{setpointB2}}<sup>(B.2)</sup>mm &#8594 3</li>
+        <li>LL &lt {{setpointB3}}<sup>(B.3)</sup>mm &#8594 4</li>
+      </ul>
+
+      for ${{setpointC}}<sup>(C)</sup> &lt price &lt ${{setpointB}}<sup>(B)</sup>:<br>
+      <ul>
+        <li>{{setpointC1}}<sup>(C.1)</sup>mm &lt LL &#8594 1</li>
+        <li>{{setpointC2}}<sup>(C.2)</sup>mm &lt LL &lt {{setpointC1}}<sup>(C.1)</sup>mm &#8594 2</li>
+        <li>{{setpointC3}}<sup>(C.3)</sup>mm &lt LL &lt {{setpointC2}}<sup>(C.2)</sup>mm &#8594 3</li>
+        <li>LL &lt {{setpointC3}}<sup>(C.3)</sup>mm &#8594 4</li>
+      </ul>
+
+      price &lt ${{setpointC}}<sup>(C)</sup> &#8594 4<br><br>
+    </p>
+
+    <hr>
+    <!--PARAMTERS CHANGE-->
+
     <form action="{{url_for('params_change')}}" method="post">
       <!--alarm email parameters-->
       <label for="emails">Alarm emails:</label><br>
       <textarea id="emails" name="emails" rows="5" cols="50">{{emails}}</textarea><br><br>
 
-      <!--Setpoint parameters explanation-->
-      <p>
-        Algorithm:<br>
-        for ${{setpointA}}<sup>(A)</sup> &lt price:<br>
-        <ul>
-          <li>{{setpointA1}}<sup>(A.1)</sup>mm &lt LL &#8594 1</li>
-          <li>{{setpointA2}}<sup>(A.2)</sup>mm &lt LL &lt {{setpointA1}}<sup>(A.1)</sup>mm &#8594 2</li>
-          <li>{{setpointA3}}<sup>(A.3)</sup>mm &lt LL &lt {{setpointA2}}<sup>(A.2)</sup>mm &#8594 3</li>
-          <li>LL &lt {{setpointA3}}<sup>(A.3)</sup>mm &#8594 4</li>
-        </ul>
-
-        for ${{setpointB}}<sup>(B)</sup> &lt price &lt ${{setpointA}}<sup>(A)</sup>:<br>
-        <ul>
-          <li>{{setpointB1}}<sup>(B.1)</sup>mm &lt LL &#8594 1</li>
-          <li>{{setpointB2}}<sup>(B.2)</sup>mm &lt LL &lt {{setpointB1}}<sup>(B.1)</sup>mm &#8594 2</li>
-          <li>{{setpointB3}}<sup>(B.3)</sup>mm &lt LL &lt {{setpointB2}}<sup>(B.2)</sup>mm &#8594 3</li>
-          <li>LL &lt {{setpointB3}}<sup>(B.3)</sup>mm &#8594 4</li>
-        </ul>
-
-        for ${{setpointC}}<sup>(C)</sup> &lt price &lt ${{setpointB}}<sup>(B)</sup>:<br>
-        <ul>
-          <li>{{setpointC1}}<sup>(C.1)</sup>mm &lt LL &#8594 1</li>
-          <li>{{setpointC2}}<sup>(C.2)</sup>mm &lt LL &lt {{setpointC1}}<sup>(C.1)</sup>mm &#8594 2</li>
-          <li>{{setpointC3}}<sup>(C.3)</sup>mm &lt LL &lt {{setpointC2}}<sup>(C.2)</sup>mm &#8594 3</li>
-          <li>LL &lt {{setpointC3}}<sup>(C.3)</sup>mm &#8594 4</li>
-        </ul>
-
-        price &lt ${{setpointC}}<sup>(C)</sup> &#8594 4<br><br>
-      </p>
-
-      <!--Setpoint parameters-->
       <label for="SetpointA">Setpoint A:</label><br>
       <input type="number" name="SetpointA" id="SetpointA" value="{{setpointA}}"><br><br>
       <label for="SetpointA1">Setpoint A.1:</label><br>
@@ -89,6 +164,9 @@
 
       <input type="submit" value="submit changes">
     </form>
+
+    <hr>
+    <!--table headers-->
 
     <form action="{{url_for('headings_change')}}" method="post">
       <label for="headings">headings:</label><br>
