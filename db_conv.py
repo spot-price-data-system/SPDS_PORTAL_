@@ -1,4 +1,5 @@
 import sqlite3, openpyxl, os
+from datetime import datetime,timedelta
 
 scale_factor = 1000000
 
@@ -63,9 +64,19 @@ def excel(filepath,root):
             x+=1
 
         #add rows to sheet
+        prev_time = datetime.strptime(rows[0][0],"%m/%d/%Y, %H:%M:%S")
         for row in rows:
             y+=1
             x=1
+            
+            current_time = datetime.strptime(row[0],"%m/%d/%Y, %H:%M:%S")
+            while prev_time + timedelta(minutes=7.5) < current_time:
+                print(prev_time.strftime("%m/%d/%Y, %H:%M:%S"),current_time.strftime("%m/%d/%Y, %H:%M:%S"))
+                prev_time = prev_time+timedelta(minutes=5)
+                sheet.cell(row=y,column=1,value=prev_time.strftime("%m/%d/%Y, %H:%M:%S"))
+                y+=1
+            prev_time = current_time
+
             for data in row:
                 if x > maxdata:
                     break
